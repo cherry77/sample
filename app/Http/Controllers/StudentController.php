@@ -244,5 +244,18 @@ class StudentController extends Controller
 //        var_dump($nums);exit;//int(1),没有可删的数据返回int(0)
     }
 
-    
+    public function section1(){
+        $name = "cherry";
+        $arr  =['cherry','summer'];
+        $students = Student::get();
+        return view('student.section1',[
+            'name' => $name,
+            'arr' =>$arr,
+            'students' => $students
+        ]);
+    }
+
+    public function urlTest(){
+        return 'urlTest';
+    }
 }
