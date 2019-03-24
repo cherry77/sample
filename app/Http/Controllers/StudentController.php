@@ -3,6 +3,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
 class StudentController extends Controller
 {
     public function test1(){
@@ -258,4 +261,147 @@ class StudentController extends Controller
     public function urlTest(){
         return 'urlTest';
     }
+    //controller之Request
+    public function request(Request $request){
+        //1.获取访问地址指定名字的值--http://sample.test/request?name=cherry
+//        echo $request->input('name');//cherry
+
+        //2.设置默认值,没有指定名称就输出设置的默认值--http://sample.test/request?name=cherry
+//        echo $request->input('sex','默认值');//默认值
+
+        //3.判断传参是否有此值--http://sample.test/request?name=cherry
+//        if($request->has('name')){
+//            echo $request->input('name');//cherry
+//        }else{
+//            echo '无该参数';
+//        }
+
+        //4.获取传参的全部值--http://sample.test/request?name=cherry&age=24
+//        $ret = $request->all();
+//        dd($ret);//array:2 ["name" => "cherry""age" => "24"]
+
+        //5.判断请求的类型
+//        echo $request->method();//GET
+
+        //6.判断类型是不是我们预想的类型
+//        if($request->isMethod('GET')){
+//            echo 'true';
+//        }else{
+//            echo 'false';
+//        }
+        //7.判断是否是ajax请求
+//        $ret = $request->ajax();
+//        var_dump($ret);//bool(false)
+
+        //8.判断请求的路径是否符合特定的格式 is()里面传的是路由设置的路径--
+        //Route::any('student/request',['uses' => 'StudentController@request']);
+        //http://sample.test/student/request?name=cherry&age=24
+//        $ret = $request->is('student/*');
+//        var_dump($ret);//bool(true)
+
+        //9.获取当前的请求路径--http://sample.test/student/request?name=cherry&age=24
+//        echo $request->url();//http://sample.test/student/request
+    }
+    //controller之Session
+    public function session(Request $request){
+        //laravel适用session有三种方式
+        //1.HTTP request类的session方法
+        //存
+//        $request->session()->put('key1','value1');
+        //取
+//        $ret = $request->session()->get('key1');
+//        var_dump($ret);//string(6) "value1"
+
+        //2.session()辅助函数
+//        session()->put('key2','value2');
+//        echo session()->get('key2');//value2
+
+        //3.Session facade
+//        Session::put('key3','value3');
+//        echo Session::get('key3');//value3
+        //数据不存在，则取默认值
+//        echo Session::get('key4','default');//default
+        //以数组的形式存
+//        Session::put(['key4' => 'value4','key5' => 'value5']);
+//        echo Session::get('key5');//value5
+
+        //怎样将数据放到session的数组中
+//        Session::push('student','cherry');
+//        Session::push('student','summer');
+//        $ret = Session::get('student','default');
+//        dd($ret);//array:2 [0 => "cherry",1 => "summer"]
+
+        //从session中取出数据并删除
+//        $res = Session::pull('student','default');
+//        var_dump($res);//default
+
+        //取出session中所有的值
+//        $all = Session::all();
+//        dd($all);
+
+        //判断session中某个key存不存在
+//        if(Session::has('key1')){
+//            echo Session::get('key1');//value1
+//        }else{
+//            echo 'key1不存在';
+//        }
+
+        //删除session指定的key的值
+//        Session::forget('key1');
+//        $all = Session::all();
+//        dd($all);
+
+        //删除所有的session
+//        Session::flush();
+//        $all = Session::all();
+//        dd($all);//[]
+        //闪存（第一次进来存，再次进来就不存了）
+//        Session::flash('key-flash','val-flash');
+//        echo Session::get('key-flash');//val-flash
+
+        //接收response方法中的快闪数据
+        echo Session::get('message','暂无数据');//第一次加载显示"我是快闪数据",第二次显示"暂无数据"
+    }
+    //响应的常见类型-字符串，视图，json，重定向
+    public function response(){
+        //1.数组转json
+//        $arr = ['errCode' => 0,'errMsg' => 'success','data'=>'cherry'];
+//        return response()->json($arr);//{"errCode":0,"errMsg":"success","data":"cherry"}
+        //2.重定向-redirect
+//        return redirect('session');//页面就会跳到有session路由的界面
+        //3.重定向带数据-redirect
+//        return redirect('session')->with('message','我是快闪数据');
+        //4.重定向action()-控制器名和方法名
+//        return redirect()->action('StudentController@session')
+//            ->with('message','我是快闪数据');
+        //5.重定向route()-路由的别名
+//        return redirect()->route('as_session')->with('message','我是快闪数据');
+        //6.返回上一个页面
+        return redirect()->back();
+    }
+
+    //中间件Middleware-过滤进入应用程序的HTTP请求
+   //场景：有一个活动，在指定日期后开始，如果活动没有开始，只能访问宣传页面（只要活动没开始，就跳到宣传页面）
+    public function activity0(){
+        return '活动还没开始呢！';
+    }
+    public function activity1(){
+        return '欢迎来到activity1';
+    }
+    public function activity2(){
+        return '欢迎来到activity2';
+    }
+    // 步骤：1.新建中间件；2.注册中间件；3.使用中间件；4.中间件的前置和后置操作
+    //1.新建中间件,在app/Http/Middleware/Activity.php新建中间件
+    //2.注册中间件：在app/Http/Kernel.php中注册中间件
+        //'activity' => \App\Http\Middleware\Activity::class,
+    //3.在路由web.php中使用中间件
+        //Route::group(['middleware' => ['activity']],function(){
+        //    Route::any('activity1',['uses' => 'StudentController@activity1']);
+        //    Route::any('activity2',['uses' => 'StudentController@activity2']);
+        //});
+    //4.中间件的前置和后置操作
+        //怎样区分是前置还是后置操作：是根据中间件的逻辑是在请求前还是请求后来区分的
+
+
 }

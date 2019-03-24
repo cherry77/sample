@@ -80,3 +80,23 @@ Route::any('orm4',['uses' => 'StudentController@orm4']);
 Route::any('section1',['uses' => 'StudentController@section1']);
 
 Route::any('url_name',['as' => 'url','uses' => 'StudentController@urlTest']);
+
+Route::any('student/request',['uses' => 'StudentController@request']);
+
+Route::group(['middleware' => ['web']],function(){
+    Route::any('session',[
+        'as' => 'as_session',
+        'uses' => 'StudentController@session']);
+});
+
+Route::any('response',['uses' => 'StudentController@response']);
+
+//中间件
+//宣传页面
+Route::any('activity0',['uses' => 'StudentController@activity0']);
+//活动页面
+Route::group(['middleware' => ['activity']],function(){
+    Route::any('activity1',['uses' => 'StudentController@activity1']);
+    Route::any('activity2',['uses' => 'StudentController@activity2']);
+});
+
