@@ -100,3 +100,9 @@ Route::group(['middleware' => ['activity']],function(){
     Route::any('activity2',['uses' => 'StudentController@activity2']);
 });
 
+//中间件 活动联系
+Route::any('test/activity0',['uses' => 'TestController@activity0']);
+Route::group(['middleware' => ['test_activity']],function(){
+    Route::any('test/activity1',['uses' => 'TestController@activity1']);
+    Route::any('test/activity2',['uses' => 'TestController@activity2']);
+});

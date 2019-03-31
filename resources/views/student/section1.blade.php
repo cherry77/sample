@@ -12,7 +12,7 @@
     content
     {{--1.模板中输出PHP变量--}}
     <p>name的值：{{$name}}</p>
-    {{--2.模板中调用PHP代码--}}
+    {{--2.模板中调用PHP方法-}}
     <p>当前时间戳：{{time()}}</p>
     <p>当前时间{{date('Y-m-d H:i:s')}}</p>
     <p>name是否在arr数组中：{{in_array($name,$arr)?'true':'false'}}</p>
