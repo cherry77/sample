@@ -106,3 +106,13 @@ Route::group(['middleware' => ['test_activity']],function(){
     Route::any('test/activity1',['uses' => 'TestController@activity1']);
     Route::any('test/activity2',['uses' => 'TestController@activity2']);
 });
+
+Route::any('upload','StudentController@upload');
+Route::any('mail','StudentController@mail');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::any('cache1','StudentController@cache1');
+Route::any('cache2','StudentController@cache2');

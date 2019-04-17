@@ -1,10 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -403,5 +406,55 @@ class StudentController extends Controller
     //4.中间件的前置和后置操作
         //怎样区分是前置还是后置操作：是根据中间件的逻辑是在请求前还是请求后来区分的
 
+    public function upload(Request $request){
+        if($request->isMethod('POST')){
+            $file = $request->file('file');
+            //文件是否上传成功
+            if($file->isValid()){
+                //原文件名
+                $originalName = $file->getClientOriginalName();
+                //扩展名
+                $ext = $file->getClientOriginalExtension();
+                //MimeType
+                $type = $file->getClientMimeType();
+                //临时绝对路径
+                $realPath = $file->getRealPath();
 
+                //验证
+                //验证完后上传到指定的位置
+                $filename = date('Y-m-d-H-i-s').'-'.uniqid().'.'.$ext;
+                $bool = Storage::disk('uploads')->put($filename,file_get_contents($realPath));
+                var_dump($bool);exit;
+            }
+        }
+        return view('student.upload');
+    }
+
+    public function mail(){
+        //邮件发送方式一Mail::raw();
+        Mail::raw('邮件内容',function($message){
+            $message->from('15071285862@163.com','cherry');
+            $message->subject('邮件主题 测试');
+            $message->to('930289986@qq.com');
+        });
+        //邮件发送方式二Mail::send
+        Mail::send('student.mail',['name' =>'cherry'],function($message){
+            $message->subject('邮件主题 测试');
+            $message->to('930289986@qq.com');
+        });
+    }
+
+    public function cache1(){
+        //1.put() 保存对象到缓存中
+//        $res = Cache::put('key2','val2',10);
+//        var_dump($res);//NULL
+        //3.add() 如果key存在则添加失败，反之添加成功
+        $bool = Cache::add('key3','val3',10);
+        var_dump($bool);//bool(true)
+    }
+    public function cache2(){
+        //2.get()从缓存中获取值
+        $val1 = Cache::get('key3');
+        var_dump($val1);//string(4) "val1"
+    }
 }
