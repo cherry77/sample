@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
@@ -449,12 +450,34 @@ class StudentController extends Controller
 //        $res = Cache::put('key2','val2',10);
 //        var_dump($res);//NULL
         //3.add() 如果key存在则添加失败，反之添加成功
-        $bool = Cache::add('key3','val3',10);
-        var_dump($bool);//bool(true)
+//        $bool = Cache::add('key3','val3',10);
+//        var_dump($bool);//bool(true)
+        //4.forever() 永久的保存在缓存中
+//        $bool = Cache::forever('key4','val4');
+//        var_dump($bool);//NULL
+        //5.判断key存不存在
+        if(Cache::has('key4')){
+            $val = Cache::get('key4');
+            var_dump($val);
+        }else{
+            echo '没有key4';
+        }
     }
     public function cache2(){
         //2.get()从缓存中获取值
-        $val1 = Cache::get('key3');
-        var_dump($val1);//string(4) "val1"
+//        $val1 = Cache::get('key4');
+//        var_dump($val1);//string(4) "val1"
+        //6.pull()将缓存取出来再删除
+//        $val4 = Cache::pull('key4');
+//        var_dump($val4);
+        //7.forget()删除缓存中的对象，删除成功返回true，失败返回false
+        $bool = Cache::forget('key4');
+        var_dump($bool);
+    }
+
+    public function queue(){
+        //在控制器中可以直接使用dispatch调用队列，是因为父控制器中有use这个DispatchesJobs
+        //如果需要在模型中用，可以自己new
+        dispatch(new SendEmail('930289986@qq.com'));
     }
 }

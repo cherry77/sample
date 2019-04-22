@@ -116,3 +116,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::any('cache1','StudentController@cache1');
 Route::any('cache2','StudentController@cache2');
+Route::any('queue','StudentController@queue');
