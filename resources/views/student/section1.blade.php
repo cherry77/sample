@@ -76,7 +76,7 @@
         url()通过路由的名称生成url
         action()通过指定控制器及方法名生成url
         route()通过路由的别名生成url
-        一般用的多的是url和action这两个
+        一般用的多的是url和route这两个
     --}}
     <a href="{{url('url_name')}}">url</a>
     <a href="{{action('StudentController@urlTest')}}">action</a>
