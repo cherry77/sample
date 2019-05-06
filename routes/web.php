@@ -11,9 +11,9 @@
 |
 */
 //1.基本路由
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::any('{all}', function () {
+    return view('layouts.master');
+})->where(['all'=>'.*']);
 //Route::get('base', function () {
 //    return "hello world";
 //});
@@ -27,7 +27,6 @@ Route::get('/', function () {
 //Route::get('user/{id}',function($id){
 //    return 'User-id-'.$id;
 //})->where('id','[0-9]+');
-
 //3.可以不传值
 //Route::get('user/{name?}',function($name = null){
 //    return 'User-name-'.$name;
@@ -49,6 +48,10 @@ Route::get('/', function () {
 //})->where(['id' => '[0-9]+','name' => '[A-Za-z]+']);
 
 //5.路由别名-可以在控制器、模板中简化用route('center'),而不需要用route('user/center')
+//Route::get('user/center',['as' => 'center',function(){
+//    return route('center');
+//}]);
+
 //Route::get('user/center',['as' => 'center',function(){
 //    return route('center');
 //}]);
