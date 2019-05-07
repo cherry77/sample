@@ -12,6 +12,11 @@ let routes = [
     {
         path:'/message',
         component:require('./components/Message')
+    },
+    {
+        path:'/posts/:id',
+        name:'posts',
+        component:require('./components/Post')
     }
 ];
 
