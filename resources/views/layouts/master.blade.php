@@ -9,18 +9,7 @@
 </head>
 <body>
 <div id="app">
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="{{Request::getPathInfo() === '/'?'active':''}}">
-            <router-link to="/">Home</router-link>
-        </li>
-        <li role="presentation"class="{{Request::getPathInfo() === '/about'?'active':''}}">
-            <router-link to="/about">About</router-link>
-        </li>
-        <li role="presentation" class="{{Request::getPathInfo() === '/message'?'active':''}}">
-            <router-link to="/message">Messages</router-link>
-        </li>
-    </ul>
-    <router-view></router-view>
+    <app></app>
 </div>
 <script src="/js/app.js"></script>
 </body>

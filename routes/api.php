@@ -20,3 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // api/posts
 Route::any('/posts','PostsController@index');
 Route::get('posts/{post}','PostsController@show');
+
+//register
+Route::post('register','Auth\RegisterController@register');
